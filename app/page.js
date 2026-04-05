@@ -390,7 +390,7 @@ export default function Home() {
                       />
                       <span
                         style={{
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: 700,
                           color: isChecked ? "#94a3b8" : "#0f172a",
                           textDecoration: isChecked ? "line-through" : "none",
