@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
+
 export default function Home() {
-  const [tasks, setTasks] = React.useState([
+  const [tasks, setTasks] = useState([
     "Ranní bodíky",
     "Snídaně",
     "Prášky",
@@ -10,8 +14,8 @@ export default function Home() {
     "Zoubky",
   ]);
 
-  const [checked, setChecked] = React.useState({});
-  const [newTask, setNewTask] = React.useState("");
+  const [checked, setChecked] = useState({});
+  const [newTask, setNewTask] = useState("");
 
   const completed = tasks.filter((t) => checked[t]).length;
 
@@ -20,9 +24,10 @@ export default function Home() {
   }
 
   function addTask() {
-    if (!newTask.trim()) return;
-    if (tasks.includes(newTask)) return;
-    setTasks([...tasks, newTask]);
+    const value = newTask.trim();
+    if (!value) return;
+    if (tasks.includes(value)) return;
+    setTasks([...tasks, value]);
     setNewTask("");
   }
 
@@ -38,14 +43,14 @@ export default function Home() {
   }
 
   function mood() {
-    if (completed === tasks.length) return "🎉";
+    if (completed === tasks.length && tasks.length > 0) return "🎉";
     if (completed > tasks.length * 0.7) return "🚀";
     if (completed > tasks.length * 0.4) return "😊";
     return "🐻";
   }
 
   return (
-    <main style={{ maxWidth: 600, margin: "40px auto", fontFamily: "sans-serif" }}>
+    <main style={{ maxWidth: 600, margin: "40px auto", padding: 20, fontFamily: "sans-serif" }}>
       <h1>Kryštofův checklist {mood()}</h1>
 
       <p>
@@ -81,7 +86,9 @@ export default function Home() {
           onChange={(e) => setNewTask(e.target.value)}
           placeholder="Nový úkol"
         />
-        <button onClick={addTask}>Přidat</button>
+        <button onClick={addTask} style={{ marginLeft: 8 }}>
+          Přidat
+        </button>
       </div>
     </main>
   );
