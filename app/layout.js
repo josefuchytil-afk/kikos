@@ -3,11 +3,7 @@ export const metadata = {
   description: "Kryštofův checklist",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }) {
   return (
     <html lang="cs">
       <body>{children}</body>
