@@ -242,7 +242,6 @@ export default function Home() {
                 <h1 style={{ margin: 0, fontSize: 26, lineHeight: 1.05 }}>
                   Kryštofův checklist
                 </h1>
-                </p>
               </div>
 
               <div
