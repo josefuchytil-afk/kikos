@@ -239,10 +239,10 @@ export default function Home() {
               }}
             >
               <div>
-                <h1 style={{ margin: 0, fontSize: 30, lineHeight: 1.05 }}>
+                <h1 style={{ margin: 0, fontSize: 28, lineHeight: 1.05 }}>
                   Kryštofův checklist
                 </h1>
-                <p style={{ margin: "6px 0 0", color: "#475569", fontSize: 14 }}>
+                <p style={{ margin: "6px 0 0", color: "#475569", fontSize: 13 }}>
                   Dneska sbíráme splněné úkoly a radostné smajlíky.
                 </p>
               </div>
@@ -263,7 +263,7 @@ export default function Home() {
                     borderRadius: 12,
                     border: "1px solid #cbd5e1",
                     padding: "8px 10px",
-                    fontSize: 14,
+                    fontSize: 13,
                     background: "white",
                   }}
                 />
@@ -302,11 +302,11 @@ export default function Home() {
                 }}
               >
                 <div>
-                  <div style={{ color: "#64748b", fontSize: 12 }}>Vybraný den</div>
+                  <div style={{ color: "#64748b", fontSize: 10 }}>Vybraný den</div>
                   <div
                     style={{
                       fontWeight: 700,
-                      fontSize: 18,
+                      fontSize: 16,
                       textTransform: "capitalize",
                     }}
                   >
@@ -314,10 +314,10 @@ export default function Home() {
                   </div>
                 </div>
                 <div style={{ minWidth: 150 }}>
-                  <div style={{ fontWeight: 700, fontSize: 15 }}>
+                  <div style={{ fontWeight: 700, fontSize: 13 }}>
                     Splněno: {completed} / {tasks.length}
                   </div>
-                  <div style={{ color: "#64748b", marginTop: 2, fontSize: 13 }}>
+                  <div style={{ color: "#64748b", marginTop: 2, fontSize: 12 }}>
                     Postup: {progress} %
                   </div>
                 </div>
@@ -352,8 +352,8 @@ export default function Home() {
                   textAlign: "center",
                 }}
               >
-                <div style={{ fontSize: 48, lineHeight: 1 }}>{mood.emoji}</div>
-                <div style={{ marginTop: 6, fontWeight: 800, fontSize: 22 }}>
+                <div style={{ fontSize: 36, lineHeight: 1 }}>{mood.emoji}</div>
+                <div style={{ marginTop: 6, fontWeight: 800, fontSize: 19 }}>
                   {mood.text}
                 </div>
               </div>
@@ -393,7 +393,7 @@ export default function Home() {
                       />
                       <span
                         style={{
-                          fontSize: 22,
+                          fontSize: 20,
                           fontWeight: 700,
                           color: isChecked ? "#94a3b8" : "#0f172a",
                           textDecoration: isChecked ? "line-through" : "none",
@@ -412,7 +412,7 @@ export default function Home() {
                         background: "white",
                         width: 38,
                         height: 38,
-                        fontSize: 16,
+                        fontSize: 14,
                         cursor: "pointer",
                         flexShrink: 0,
                       }}
@@ -429,7 +429,7 @@ export default function Home() {
 
         <aside style={{ display: "grid", gap: 14, alignContent: "start" }}>
           <section style={{ ...cardStyle, padding: 16 }}>
-            <h2 style={{ margin: 0, fontSize: 18 }}>Přidat položku</h2>
+            <h2 style={{ margin: 0, fontSize: 16 }}>Přidat položku</h2>
             <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
               <input
                 value={newTask}
@@ -441,7 +441,7 @@ export default function Home() {
                   borderRadius: 12,
                   border: "1px solid #cbd5e1",
                   padding: "10px 12px",
-                  fontSize: 14,
+                  fontSize: 12,
                 }}
               />
               <button
@@ -454,7 +454,7 @@ export default function Home() {
                   padding: "10px 12px",
                   fontWeight: 700,
                   cursor: "pointer",
-                  fontSize: 14,
+                  fontSize: 12,
                 }}
               >
                 Přidat
@@ -463,7 +463,7 @@ export default function Home() {
           </section>
 
           <section style={{ ...cardStyle, padding: 16 }}>
-            <h2 style={{ margin: 0, fontSize: 18 }}>Posledních 7 dní</h2>
+            <h2 style={{ margin: 0, fontSize: 16 }}>Posledních 7 dní</h2>
             <div style={{ display: "grid", gap: 8, marginTop: 10 }}>
               {recentDays.map((dayKey) => {
                 const dayChecks = days[dayKey] || {};
@@ -490,12 +490,12 @@ export default function Home() {
                       style={{
                         fontWeight: 700,
                         textTransform: "capitalize",
-                        fontSize: 14,
+                        fontSize: 13,
                       }}
                     >
                       {formatDate(dayKey)}
                     </div>
-                    <div style={{ fontSize: 12, color: "#64748b", marginTop: 3 }}>
+                    <div style={{ fontSize: 11, color: "#64748b", marginTop: 3 }}>
                       {done} / {tasks.length} splněno
                     </div>
                     <div
@@ -522,13 +522,13 @@ export default function Home() {
           </section>
 
           <section style={{ ...cardStyle, padding: 16, background: "#f8fafc" }}>
-            <h2 style={{ margin: 0, fontSize: 18 }}>Jak to funguje</h2>
+            <h2 style={{ margin: 0, fontSize: 16 }}>Jak to funguje</h2>
             <div
               style={{
                 marginTop: 10,
                 color: "#475569",
                 lineHeight: 1.5,
-                fontSize: 14,
+                fontSize: 12,
               }}
             >
               <div>✓ Každý den se ukládá zvlášť.</div>
