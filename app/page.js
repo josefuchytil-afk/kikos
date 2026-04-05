@@ -239,11 +239,9 @@ export default function Home() {
               }}
             >
               <div>
-                <h1 style={{ margin: 0, fontSize: 28, lineHeight: 1.05 }}>
+                <h1 style={{ margin: 0, fontSize: 26, lineHeight: 1.05 }}>
                   Kryštofův checklist
                 </h1>
-                <p style={{ margin: "6px 0 0", color: "#475569", fontSize: 13 }}>
-                  Dneska sbíráme splněné úkoly a radostné smajlíky.
                 </p>
               </div>
 
@@ -306,7 +304,7 @@ export default function Home() {
                   <div
                     style={{
                       fontWeight: 700,
-                      fontSize: 16,
+                      fontSize: 14,
                       textTransform: "capitalize",
                     }}
                   >
@@ -352,8 +350,8 @@ export default function Home() {
                   textAlign: "center",
                 }}
               >
-                <div style={{ fontSize: 36, lineHeight: 1 }}>{mood.emoji}</div>
-                <div style={{ marginTop: 6, fontWeight: 800, fontSize: 19 }}>
+                <div style={{ fontSize: 34, lineHeight: 1 }}>{mood.emoji}</div>
+                <div style={{ marginTop: 6, fontWeight: 800, fontSize: 16 }}>
                   {mood.text}
                 </div>
               </div>
@@ -393,7 +391,7 @@ export default function Home() {
                       />
                       <span
                         style={{
-                          fontSize: 20,
+                          fontSize: 18,
                           fontWeight: 700,
                           color: isChecked ? "#94a3b8" : "#0f172a",
                           textDecoration: isChecked ? "line-through" : "none",
