@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 const DEFAULT_TASKS = [
   "Ranní bodíky",
+  "Oblékání",
   "Snídaně",
   "Prášky",
   "Dopolední bodíky",
@@ -13,7 +14,7 @@ const DEFAULT_TASKS = [
   "Zoubky",
 ];
 
-const STORAGE_KEY = "krystof-checklist-v2";
+const STORAGE_KEY = "krystof-checklist-v4";
 
 function getTodayKey() {
   const d = new Date();
@@ -40,26 +41,29 @@ function moodFor(completed, total) {
   if (completed === total && total > 0) {
     return { emoji: "🤩", text: "Paráda! Všechno splněno!" };
   }
-  if (completed >= 7) {
+  if (completed >= 8) {
     return { emoji: "🎉", text: "Skvělé! Už jsi skoro hotový." };
   }
-  if (completed >= 6) {
+  if (completed >= 7) {
     return { emoji: "🏆", text: "Výborně! Ještě malý kousek." };
   }
-  if (completed >= 5) {
+  if (completed >= 6) {
     return { emoji: "🚀", text: "Letíš jako raketa!" };
   }
-  if (completed >= 4) {
+  if (completed >= 5) {
     return { emoji: "😁", text: "Paráda! Jde ti to moc hezky." };
   }
-  if (completed >= 3) {
+  if (completed >= 4) {
     return { emoji: "😃", text: "Už ti to jde! Jen tak dál." };
   }
-  if (completed >= 2) {
+  if (completed >= 3) {
     return { emoji: "🙂", text: "Dobře! Pokračujeme dál." };
   }
+  if (completed >= 2) {
+    return { emoji: "😊", text: "Super první kroky!" };
+  }
   if (completed >= 1) {
-    return { emoji: "😊", text: "Super první krok!" };
+    return { emoji: "🙂", text: "Super první krok!" };
   }
   return { emoji: "🐻", text: "Začínáme! Pojďme na první úkol." };
 }
@@ -67,6 +71,7 @@ function moodFor(completed, total) {
 function taskLabel(task) {
   const lower = task.toLowerCase();
   if (lower.includes("bodíky")) return `⚫⚫ ${task}`;
+  if (lower.includes("oblékání")) return `👕 ${task}`;
   if (lower.includes("snídaně")) return `🍽️ ${task}`;
   if (lower.includes("prášky")) return `💊 ${task}`;
   if (lower.includes("oběd")) return `🍛 ${task}`;
@@ -93,6 +98,7 @@ export default function Home() {
             : DEFAULT_TASKS;
         const loadedDays =
           parsed.days && typeof parsed.days === "object" ? parsed.days : {};
+
         setTasks(loadedTasks);
         setDays(loadedDays);
       }
@@ -115,40 +121,41 @@ export default function Home() {
   }, [tasks, days, ready]);
 
   useEffect(() => {
+    if (!ready) return;
+
     setDays((prev) => {
-      const next = { ...prev };
-
-      if (!next[selectedDay]) {
-        next[selectedDay] = emptyChecks(tasks);
-      }
-
-      Object.keys(next).forEach((dayKey) => {
-        const current = next[dayKey] || {};
-        next[dayKey] = Object.fromEntries(
-          tasks.map((task) => [task, Boolean(current[task])])
-        );
-      });
-
-      return next;
+      if (prev[selectedDay]) return prev;
+      return {
+        ...prev,
+        [selectedDay]: emptyChecks(tasks),
+      };
     });
-  }, [selectedDay, tasks]);
+  }, [selectedDay, ready, tasks]);
 
   const checks = days[selectedDay] || emptyChecks(tasks);
+
   const completed = useMemo(
     () => tasks.filter((task) => checks[task]).length,
     [tasks, checks]
   );
-  const progress = tasks.length ? Math.round((completed / tasks.length) * 100) : 0;
+
+  const progress = tasks.length
+    ? Math.round((completed / tasks.length) * 100)
+    : 0;
+
   const mood = moodFor(completed, tasks.length);
 
   function toggleTask(task) {
-    setDays((prev) => ({
-      ...prev,
-      [selectedDay]: {
-        ...(prev[selectedDay] || emptyChecks(tasks)),
-        [task]: !(prev[selectedDay] || emptyChecks(tasks))[task],
-      },
-    }));
+    setDays((prev) => {
+      const dayChecks = prev[selectedDay] || emptyChecks(tasks);
+      return {
+        ...prev,
+        [selectedDay]: {
+          ...dayChecks,
+          [task]: !dayChecks[task],
+        },
+      };
+    });
   }
 
   function resetDay() {
@@ -173,14 +180,14 @@ export default function Home() {
 
       if (Object.keys(next).length === 0) {
         next[selectedDay] = { [value]: false };
-      } else {
-        Object.keys(next).forEach((dayKey) => {
-          next[dayKey] = {
-            ...next[dayKey],
-            [value]: Boolean(next[dayKey]?.[value]),
-          };
-        });
       }
+
+      Object.keys(next).forEach((dayKey) => {
+        next[dayKey] = {
+          ...next[dayKey],
+          [value]: false,
+        };
+      });
 
       if (!next[selectedDay]) {
         next[selectedDay] = { [value]: false };
@@ -314,7 +321,9 @@ export default function Home() {
                 }}
               >
                 <div>
-                  <div style={{ color: "#64748b", fontSize: 10 }}>Vybraný den</div>
+                  <div style={{ color: "#64748b", fontSize: 10 }}>
+                    Vybraný den
+                  </div>
                   <div
                     style={{
                       fontWeight: 700,
@@ -348,7 +357,8 @@ export default function Home() {
                   style={{
                     width: `${progress}%`,
                     height: "100%",
-                    background: "linear-gradient(90deg, #38bdf8 0%, #2563eb 100%)",
+                    background:
+                      "linear-gradient(90deg, #38bdf8 0%, #2563eb 100%)",
                     borderRadius: 999,
                     transition: "width 0.25s ease",
                   }}
@@ -358,7 +368,8 @@ export default function Home() {
               <div
                 style={{
                   marginTop: 12,
-                  background: "linear-gradient(180deg, #eff6ff 0%, #e0f2fe 100%)",
+                  background:
+                    "linear-gradient(180deg, #eff6ff 0%, #e0f2fe 100%)",
                   borderRadius: 18,
                   padding: 14,
                   textAlign: "center",
@@ -385,7 +396,9 @@ export default function Home() {
                       alignItems: "center",
                       gap: 10,
                       background: isChecked ? "#ecfdf5" : "white",
-                      border: isChecked ? "2px solid #bbf7d0" : "1px solid #e5e7eb",
+                      border: isChecked
+                        ? "2px solid #bbf7d0"
+                        : "1px solid #e5e7eb",
                     }}
                   >
                     <label
@@ -480,7 +493,9 @@ export default function Home() {
               {recentDays.map((dayKey) => {
                 const dayChecks = days[dayKey] || {};
                 const done = tasks.filter((task) => dayChecks[task]).length;
-                const pct = tasks.length ? Math.round((done / tasks.length) * 100) : 0;
+                const pct = tasks.length
+                  ? Math.round((done / tasks.length) * 100)
+                  : 0;
 
                 return (
                   <button
@@ -507,7 +522,13 @@ export default function Home() {
                     >
                       {formatDate(dayKey)}
                     </div>
-                    <div style={{ fontSize: 11, color: "#64748b", marginTop: 3 }}>
+                    <div
+                      style={{
+                        fontSize: 11,
+                        color: "#64748b",
+                        marginTop: 3,
+                      }}
+                    >
                       {done} / {tasks.length} splněno
                     </div>
                     <div
@@ -523,7 +544,8 @@ export default function Home() {
                         style={{
                           width: `${pct}%`,
                           height: "100%",
-                          background: "linear-gradient(90deg, #38bdf8 0%, #2563eb 100%)",
+                          background:
+                            "linear-gradient(90deg, #38bdf8 0%, #2563eb 100%)",
                         }}
                       />
                     </div>
@@ -533,7 +555,9 @@ export default function Home() {
             </div>
           </section>
 
-          <section style={{ ...cardStyle, padding: 16, background: "#f8fafc" }}>
+          <section
+            style={{ ...cardStyle, padding: 16, background: "#f8fafc" }}
+          >
             <h2 style={{ margin: 0, fontSize: 16 }}>Jak to funguje</h2>
             <div
               style={{
