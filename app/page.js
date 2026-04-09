@@ -116,31 +116,22 @@ export default function Home() {
 
   useEffect(() => {
     setDays((prev) => {
-      const existing = prev[selectedDay];
-      if (existing) {
-        const normalized = Object.fromEntries(
-          tasks.map((task) => [task, Boolean(existing[task])])
-        );
-        const same = JSON.stringify(normalized) === JSON.stringify(existing);
-        if (same) return prev;
-        return { ...prev, [selectedDay]: normalized };
-      }
-      return { ...prev, [selectedDay]: emptyChecks(tasks) };
-    });
-  }, [selectedDay, tasks]);
-
-  useEffect(() => {
-    setDays((prev) => {
       const next = { ...prev };
+
+      if (!next[selectedDay]) {
+        next[selectedDay] = emptyChecks(tasks);
+      }
+
       Object.keys(next).forEach((dayKey) => {
         const current = next[dayKey] || {};
         next[dayKey] = Object.fromEntries(
           tasks.map((task) => [task, Boolean(current[task])])
         );
       });
+
       return next;
     });
-  }, [tasks]);
+  }, [selectedDay, tasks]);
 
   const checks = days[selectedDay] || emptyChecks(tasks);
   const completed = useMemo(
@@ -174,12 +165,36 @@ export default function Home() {
       setNewTask("");
       return;
     }
+
     setTasks((prev) => [...prev, value]);
+
+    setDays((prev) => {
+      const next = { ...prev };
+
+      if (Object.keys(next).length === 0) {
+        next[selectedDay] = { [value]: false };
+      } else {
+        Object.keys(next).forEach((dayKey) => {
+          next[dayKey] = {
+            ...next[dayKey],
+            [value]: Boolean(next[dayKey]?.[value]),
+          };
+        });
+      }
+
+      if (!next[selectedDay]) {
+        next[selectedDay] = { [value]: false };
+      }
+
+      return next;
+    });
+
     setNewTask("");
   }
 
   function removeTask(task) {
     setTasks((prev) => prev.filter((t) => t !== task));
+
     setDays((prev) => {
       const next = {};
       for (const [dayKey, taskMap] of Object.entries(prev)) {
